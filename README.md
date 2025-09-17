@@ -1,4 +1,6 @@
-1. Link PWS : 
+Tugas 2
+
+1. Link PWS : https://fidel-akilah-fidelfootballshop.pbp.cs.ui.ac.id
 
 2. Bagaimana cara kamu mengimplementasikan checklist?
 Jawab: Memulai proyek dan app dengan mengikuti tutorial 0 (membuat repo, direktori lokal, dll), lalu
@@ -28,3 +30,9 @@ Jawab: Menurut saya adalah karena Model-View-Template yang dimiliki Django. Pola
 
 7. Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?
 Jawab: Tutorialnya sangat jelas dan terstruktur dengan baik, membuat saya mudah memahami alur kerja Django dari awal hingga akhir. 
+
+
+
+
+Tugas 3
+1. 
