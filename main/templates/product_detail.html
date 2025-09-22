@@ -19,5 +19,14 @@
 {% endif %}
 
 <p>{{ product.description }}</p>
+{% if product.user %}
+<p>Created by: {{ product.user.username }}</p>
+{% endif %}
 
+
+{% if user.is_authenticated and user == product.created_by %}
+<p>
+  <a href="{% url 'main:update_product' product.id %}"><button>Edit Product</button></a>
+  <a href="{% url 'main:delete_product' product.id %}"><button>Delete Product</button></a>
+{% endif %}
 {% endblock content %}
