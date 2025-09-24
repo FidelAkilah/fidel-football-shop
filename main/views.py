@@ -41,13 +41,14 @@ def show_xml_by_id(request, product_id):
 @login_required(login_url='/login')
 def show_main(request):
     filter_type = request.GET.get("filter", "all")
-    if filter_type == "popular":
-        product_list = Product.objects.filter(product_views__gt=50)
-    elif filter_type == "featured":
-        product_list = Product.objects.filter(is_featured=True)
+    if filter_type == "all":
+        product_list = Product.objects.all()
+        productstockunder5 = Product.objects.filter(stock__lt=5).values()
+
     else:
-        product_list = Product.objects,filter(user=request.user)
-    product_list = Product.objects.all()
+        product_list = Product.objects.filter(user=request.user)
+
+    
 
     context = {
         'npm' : '2406358636',
@@ -55,6 +56,7 @@ def show_main(request):
         'class': 'PBP F',
         'product_list': product_list,
         'last_login': request.COOKIES.get('last_login', 'Never'),
+        'productstockunder5': productstockunder5,
     }
 
     return render(request, "main.html", context)

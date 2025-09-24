@@ -55,5 +55,29 @@
 <hr>
 {% endfor %}
 
+{% for product in productstockunder5%}
+<div>
+  <h2><a href="{% url 'main:show_product' product.id %}">{{ product.name }}</a></h2>
+
+  <p><b>{{ product.get_category_display }}</b>{% if product.is_featured %} | 
+    <b>Featured</b>{% endif %}{% if product.is_product_popular %} | 
+    <b>Popular</b>{% endif %} | <i>{{ product.created_at|date:"d M Y H:i" }}</i> 
+    | Views: {{ product.product_views }}</p>
+
+  <p><b>Price: {{ product.formatted_price }}</b> | Stock: {{ product.stock }}</p>
+
+  {% if product.thumbnail %}
+  <img src="{{ product.thumbnail }}" alt="thumbnail" width="150" height="100">
+  <br />
+  {% endif %}
+
+  <p>{{ product.description|truncatewords:25 }}...</p>
+
+  <p><a href="{% url 'main:show_product' product.id %}"><button>View Details</button></a></p>
+</div>
+
+<hr>
+{% endfor %}
+
 {% endif %}
 {% endblock content %}

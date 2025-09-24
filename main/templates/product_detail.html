@@ -20,7 +20,9 @@
 
 <p>{{ product.description }}</p>
 {% if product.user %}
-<p>Created by: {{ product.user.username }}</p>
+  <p>Created by: {{ product.user.username }}</p>
+{% else %}
+  <p>Created by: Anonymous</p>
 {% endif %}
 
 

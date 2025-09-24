@@ -54,3 +54,25 @@ Tidak ada feedback negatif hanya positif. Tutorial yang dibuat oleh asdos sangat
 7. Screenshot xml dan json
 https://drive.google.com/drive/folders/1Dz9tsaLHm8KzIh_FLC6Sxsk9oHl6mYJ6?usp=sharing
 
+
+
+Tugas 4
+1. Apa itu Django AuthenticationForm?
+Jawab:
+AuthenticationForm adalah form bawaan Django yang khusus digunakan untuk proses login. Form ini memvalidasi apakah username dan password yang dimasukkan pengguna cocok dengan data di database dan apakah akun tersebut aktif. Kelebihannya adalah keamanan dan kemudahan penggunaan karena sudah terintegrasi dengan sistem autentikasi Django. Kekurangannya adalah kurang fleksibel, karena secara default hanya menyediakan kolom username dan password, sehingga memerlukan kustomisasi jika ingin menambahkan fitur seperti "Remember Me".
+
+2. Apa perbedaan antara autentikasi dan otorisasi? Bagaimana Django mengimplementasikannya?
+Jawab:
+Autentikasi adalah proses verifikasi identitas (menjawab "Siapa Anda?"), sedangkan otorisasi adalah proses penentuan hak akses setelah identitas terverifikasi (menjawab "Apa yang boleh Anda lakukan?"). Django mengimplementasikan autentikasi melalui django.contrib.auth yang menyediakan model User, form, serta fungsi seperti authenticate() dan login(). Sementara itu, otorisasi diimplementasikan melalui sistem perizinan (permission system) yang mencakup flags (is_staff, is_superuser), grup, dan decorators seperti @login_required.
+
+3. Apa saja kelebihan dan kekurangan session dan cookies?
+Jawab:
+Cookies menyimpan data di browser klien, sehingga tidak membebani server tetapi tidak aman untuk data sensitif dan memiliki ukuran terbatas. Sebaliknya, session menyimpan data di sisi server dan hanya menempatkan ID unik di cookie klien. Hal ini membuat session jauh lebih aman dan mampu menyimpan data lebih besar, namun kekurangannya adalah membebani sumber daya server dan bisa lebih kompleks untuk dikelola dalam skala besar.
+
+4. Apakah penggunaan cookies aman secara default dan bagaimana Django menanganinya?
+Jawab:
+Tidak, cookies tidak aman secara default karena rentan terhadap serangan seperti XSS (pencurian data) dan CSRF (pemalsuan permintaan). Django menangani ini dengan berbagai cara: menyediakan proteksi CSRF bawaan ({% csrf_token %}), menggunakan cookie sesi yang ditandatangani secara kriptografis dan berstatus HttpOnly (tidak bisa diakses JavaScript), serta menyediakan pengaturan untuk memberlakukan HTTPS (SESSION_COOKIE_SECURE).
+
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist tugas 4
+Jawab:
+dengan membuat authentication baru yang berisi views dan URL untuk registrasi, login, dan logout. Untuk registrasi, saya menggunakan UserCreationForm, sedangkan untuk login saya memakai AuthenticationForm yang juga berfungsi untuk mengatur cookie last_login. Selanjutnya, saya menghubungkan model Product ke model User bawaan Django menggunakan ForeignKey. Setelah membuat dummy data untuk dua pengguna, saya memodifikasi template halaman utama untuk menampilkan informasi pengguna ({{ user.username }}) dan cookie last_login secara kondisional menggunakan {% if user.is_authenticated %}. Terakhir, semua perubahan di-commit dan di-push ke GitHub.
