@@ -76,3 +76,26 @@ Tidak, cookies tidak aman secara default karena rentan terhadap serangan seperti
 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist tugas 4
 Jawab:
 dengan membuat authentication baru yang berisi views dan URL untuk registrasi, login, dan logout. Untuk registrasi, saya menggunakan UserCreationForm, sedangkan untuk login saya memakai AuthenticationForm yang juga berfungsi untuk mengatur cookie last_login. Selanjutnya, saya menghubungkan model Product ke model User bawaan Django menggunakan ForeignKey. Setelah membuat dummy data untuk dua pengguna, saya memodifikasi template halaman utama untuk menampilkan informasi pengguna ({{ user.username }}) dan cookie last_login secara kondisional menggunakan {% if user.is_authenticated %}. Terakhir, semua perubahan di-commit dan di-push ke GitHub.
+
+
+
+Tugas 5
+1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+Urutan prioritas selector CSS ditentukan oleh spesifisitasnya, dari yang tertinggi hingga terendah: inline style, ID, class atau atribut, dan terakhir adalah selector elemen/tag. Selector yang lebih spesifik akan selalu diutamakan untuk diterapkan pada sebuah elemen. Jika dua selector memiliki spesifisitas yang sama, maka aturan yang ditulis paling akhir atau paling bawah di dalam file CSS akan menjadi pemenangnya.
+
+2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+
+Responsive design sangat penting karena memastikan sebuah website memberikan pengalaman pengguna (UX) yang optimal di semua ukuran perangkat, dari desktop hingga mobile. Konsep ini meningkatkan jangkauan audiens secara signifikan, mengingat mayoritas trafik web saat ini berasal dari perangkat seluler, serta berdampak positif pada peringkat SEO karena mesin pencari memprioritaskan situs yang mobile-friendly. Situs berita modern seperti The Guardian adalah contoh baik yang tata letaknya beradaptasi, berbeda dengan situs-situs lama yang tampilannya statis dan sulit digunakan di layar kecil.
+
+3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+
+Ketiga properti ini adalah komponen dari CSS Box Model. Padding adalah ruang transparan di dalam garis tepi (border) yang memisahkan konten dari border itu sendiri. Border adalah garis yang membungkus konten dan padding. Sementara itu, Margin adalah ruang transparan di luar border yang berfungsi untuk menciptakan jarak antara elemen tersebut dengan elemen lainnya di sekitarnya.
+
+4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+
+Flexbox adalah sistem layout satu dimensi yang ideal untuk mengatur dan menyelaraskan item dalam satu baris atau satu kolom, seperti pada menu navigasi atau daftar item. Sebaliknya, Grid adalah sistem layout dua dimensi yang dirancang untuk mengatur tata letak halaman secara keseluruhan dalam baris dan kolom secara bersamaan, sangat cocok untuk layout halaman yang kompleks seperti dasbor atau galeri foto.
+
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+
+Proses implementasi proyek ini dimulai dari importing tailwind ke base template html, lalu membuat static folder di root direectory yang berisi globals.css. Dari situ baru membuat navbar sebagai komponen, lalu mengimplementasikannya di page html lainnya. Setelah itu membuat design css pada page html lainya (edit_product, product_detail, main, add_product)
