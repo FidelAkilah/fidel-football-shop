@@ -13,32 +13,9 @@
         <p class="text-gray-600">Welcome back to Football Shop</p>
       </div>
 
-      <!-- Form Errors Display -->
-      {% if form.non_field_errors %}
-        <div class="mb-6">
-          {% for error in form.non_field_errors %}
-            <div class="px-4 py-3 rounded-md text-sm border bg-red-50 border-red-200 text-red-700">
-              {{ error }}
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
+      <div id="ajax-messages" class="mb-6"></div>
 
-      {% if form.errors %}
-        <div class="mb-6">
-          {% for field, errors in form.errors.items %}
-            {% if field != '__all__' %}
-              {% for error in errors %}
-                <div class="px-4 py-3 rounded-md text-sm border bg-red-50 border-red-200 text-red-700 mb-2">
-                  <strong>{{ field|title }}:</strong> {{ error }}
-                </div>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      <form method="POST" action="" class="space-y-6">
+      <form id="login-form" method="POST" action="{% url 'main:login_ajax' %}" class="space-y-6">
         {% csrf_token %}
         
         <div>
@@ -64,32 +41,11 @@
         </div>
 
         <button 
-          type="submit" 
+          type="submit" id="submit-button"
           class="w-full bg-green-600 text-white font-medium py-3 px-4 rounded-md hover:bg-green-700 transition-colors">
           Sign In
         </button>
       </form>
-
-      <!-- Messages Display -->
-      {% if messages %}
-        <div class="mt-6">
-          {% for message in messages %}
-            <div 
-              class="
-                px-4 py-3 rounded-md text-sm border
-                {% if message.tags == 'success' %}
-                  bg-green-50 border-green-200 text-green-700
-                {% elif message.tags == 'error' %}
-                  bg-red-50 border-red-200 text-red-700
-                {% else %}
-                  bg-gray-50 border-gray-200 text-gray-700
-                {% endif %}
-              ">
-              {{ message }}
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
 
       <div class="mt-6 text-center pt-6 border-t border-gray-200">
         <p class="text-gray-500 text-sm">
@@ -102,4 +58,59 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('login-form');
+    // const messagesDiv = document.getElementById('ajax-messages'); // We no longer need this
+    const submitButton = document.getElementById('submit-button');
+  
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault(); 
+      
+      // messagesDiv.innerHTML = ''; // We no longer need this
+      submitButton.disabled = true;
+      submitButton.textContent = 'Signing In...';
+  
+      const formData = new FormData(form);
+      const data = {
+        username: formData.get('username'),
+        password: formData.get('password'),
+      };
+      
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+          },
+          body: JSON.stringify(data),
+        });
+  
+        const result = await response.json();
+  
+        if (response.ok) {
+          // Show success toast BEFORE redirecting
+          createToast('success', 'Login successful! Redirecting...');
+          
+          setTimeout(() => {
+            window.location.href = result.redirect_url;
+          }, 1000); // A small delay so user can see the toast
+          
+        } else {
+          // Display the error message using a toast
+          createToast('error', result.message || 'An unknown error occurred.');
+          submitButton.disabled = false;
+          submitButton.textContent = 'Sign In';
+        }
+      } catch (error) {
+        console.error('Submission error:', error);
+        createToast('error', 'A network error occurred. Please try again.');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Sign In';
+      }
+    });
+  });
+</script>
 {% endblock content %}
