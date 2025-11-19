@@ -35,3 +35,4 @@ function showToast(title, message, type = 'normal', duration = 3000) {
         toastComponent.classList.add('opacity-0', 'translate-y-64');
     }, duration);
 }
+

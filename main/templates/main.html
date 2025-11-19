@@ -97,11 +97,11 @@
 
 {% if messages %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    {% for message in messages %}
-        createToast("{{ message.tags }}", "{{ message|escapejs }}");
-    {% endfor %}
-});
+  document.addEventListener('DOMContentLoaded', function() {
+      {% for message in messages %}
+          createToast("{{ message.tags }}", "{{ message|escapejs }}");
+      {% endfor %}
+  });
 </script>
 {% endif %}
 
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="aspect-[16/9] relative overflow-hidden">
         ${thumbnailHtml}
         <div class="absolute top-3 left-3">
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-600 text-white">${categoryLabel}</span>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-600 text-white">${categoryLabel}</span>
         </div>
         <div class="absolute top-3 right-3 flex flex-col space-y-2">
           ${featuredLabel}

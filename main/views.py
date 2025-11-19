@@ -12,10 +12,12 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
-from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+import requests
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.html import strip_tags
 import json
+from django.http import JsonResponse
 
 
 
@@ -239,3 +241,85 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+
+def proxy_image(request):
+    image_url = request.GET.get('url')
+    if not image_url:
+        return HttpResponse('No URL provided', status=400)
+    
+    try:
+        # Fetch image from external source
+        response = requests.get(image_url, timeout=10)
+        response.raise_for_status()
+        
+        # Return the image with proper content type
+        return HttpResponse(
+            response.content,
+            content_type=response.headers.get('Content-Type', 'image/jpeg')
+        )
+    except requests.RequestException as e:
+        return HttpResponse(f'Error fetching image: {str(e)}', status=500)
+
+
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        try:
+    
+            data = json.loads(request.body)
+
+            
+            name = strip_tags(data.get("name", ""))
+            price = data.get("price", 0)  
+            description = strip_tags(data.get("description", ""))
+            category = data.get("category", "equipment") 
+            thumbnail = data.get("thumbnail", "")
+            is_featured = data.get("is_featured", False)
+            
+            
+            user = request.user 
+            
+           
+            if not name or not price:
+                return JsonResponse({"status": "error", "message": "Name and Price cannot be empty."}, status=400)
+
+            
+            new_product = Product(
+                name=name,
+                price=price,
+                description=description,
+                category=category,
+                thumbnail=thumbnail,
+                is_featured=is_featured,
+                user=user if user.is_authenticated else None, # Hanya set user jika sudah login
+            )
+            
+            
+            new_product.save()
+
+            return JsonResponse({"status": "success", "message": "Product created successfully"}, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({"status": "error", "message": "Invalid JSON format"}, status=400)
+        except Exception as e:
+            # Handle error umum, seperti category choice yang tidak valid
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+            
+    else:
+        # Menolak method selain POST
+        return JsonResponse({"status": "error", "message": "Method not allowed"}, status=405)
+
+
+
+
+@login_required 
+def show_my_products_json(request):
+    # Filter produk hanya milik user yang sedang login
+    my_products = Product.objects.filter(user=request.user)
+    
+  
+    data = serializers.serialize("json", my_products, fields=('name', 'price', 'description', 'thumbnail', 'category', 'stock', 'product_views', 'created_at', 'is_featured', 'user'))
+    
+    
+    return HttpResponse(data, content_type="application/json")

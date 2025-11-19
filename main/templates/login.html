@@ -68,7 +68,7 @@
     form.addEventListener('submit', async (event) => {
       event.preventDefault(); 
       
-      // messagesDiv.innerHTML = ''; // We no longer need this
+      
       submitButton.disabled = true;
       submitButton.textContent = 'Signing In...';
   
@@ -92,7 +92,7 @@
   
         if (response.ok) {
           // Show success toast BEFORE redirecting
-          createToast('success', 'Login successful! Redirecting...');
+          showToast('Success', 'Login successful! Redirecting...', 'success');
           
           setTimeout(() => {
             window.location.href = result.redirect_url;
@@ -100,13 +100,13 @@
           
         } else {
           // Display the error message using a toast
-          createToast('error', result.message || 'An unknown error occurred.');
+          showToast('Error', result.message || 'An unknown error occurred.', 'error');
           submitButton.disabled = false;
           submitButton.textContent = 'Sign In';
         }
       } catch (error) {
         console.error('Submission error:', error);
-        createToast('error', 'A network error occurred. Please try again.');
+        showToast('Error', 'A network error occurred. Please try again.', 'error');
         submitButton.disabled = false;
         submitButton.textContent = 'Sign In';
       }
